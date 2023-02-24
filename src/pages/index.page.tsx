@@ -19,6 +19,7 @@ interface IMovieData {
   poster_path: string;
   release_date: string;
   vote_average: number;
+  vote_count: number;
 }
 
 interface IRequest {
@@ -28,7 +29,7 @@ interface IRequest {
 
 export default function Home({results, total_pages}: IRequest) {
   const router = useRouter();
-
+  
   return (
     <>
       <Head>
@@ -43,8 +44,8 @@ export default function Home({results, total_pages}: IRequest) {
 
         <div className='flex flex-col items-center w-full p-20'>
           <MovieGrid title='Popular movies'>
-            {results.map((movie) => (
-              <Movie key={movie.id} movie={movie} />
+            {results.map((movie, index) => (
+              <Movie key={movie.id + movie.title} movie={movie} />
             ))}
           </MovieGrid>
           
@@ -55,7 +56,7 @@ export default function Home({results, total_pages}: IRequest) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<IRequest> = async ({query}) => {
+export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {page} = query
   
   const {data} = await axios.get<IRequest>(`https://api.themoviedb.org/3/movie/popular?language=pt-Br&page=${page ? page : 1}`, {
@@ -64,7 +65,6 @@ export const getServerSideProps: GetServerSideProps<IRequest> = async ({query}) 
     }
   });
 
-  console.log(data)
   return {
     props: data
   }
