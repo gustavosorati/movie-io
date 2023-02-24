@@ -6,7 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'hips.hearstapps.com',
+        hostname: 'i.pravatar.cc',
       },
       {
         protocol: 'https',
