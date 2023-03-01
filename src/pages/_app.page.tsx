@@ -5,6 +5,7 @@ import NProgress from 'nprogress'
 
 import '@/styles/globals.css'
 import '@/styles/nprogress.css'
+import { MoviesContextProvider } from "@/context/MoviesContext"
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();
@@ -23,7 +24,9 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <MoviesContextProvider>
+        <Component {...pageProps} />
+      </MoviesContextProvider>
     </SessionProvider>
   )
 }
