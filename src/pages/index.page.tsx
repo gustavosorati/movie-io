@@ -1,22 +1,16 @@
 import Head from 'next/head'
-import { Inter } from '@next/font/google'
 import { GetServerSideProps } from 'next'
 import { useEffect, useState } from 'react'
 
 import axios from 'axios'
+import { api } from '@/lib/axios'
 import { FavoriteMovieDTO } from '@/dtos/MovieDTO'
 
-import { List, X } from 'phosphor-react'
-import { Sidebar } from '@/components/mobile/Sidebar'
-import { SearchInput } from '@/components/mobile/Search/SearchInput'
-import { Movie } from '@/components/mobile/Movie'
-import { Pagination } from '@/components/mobile/Pagination'
-import { api } from '@/lib/axios'
+import { Movie } from '@/components/Movie/Movie'
+import { Sidebar } from '@/components/Sidebar/Sidebar'
+import { Pagination } from '@/components/Pagination'
+import { SearchInput } from '@/components/Search/SearchInput'
 
-
-
-
-const inter = Inter({ subsets: ['latin'] })
 interface IMovieBasicData {
   id: number;
   tmdb_id: number;
@@ -38,14 +32,9 @@ interface IRequest {
 }
 
 export default function Home({results, page, total_pages}: IRequest) {
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const [movies, setMovies] = useState<IMovieBasicData[]>([]);
   const [favoriteMovies, setFavoriteMovies] = useState<FavoriteMovieDTO[]>([]); 
-
-  function handleToggleMenu() {
-    setMenuIsOpen(prevState => !prevState)
-  }
 
   async function synchroMovies() {   
     if(favoriteMovies && favoriteMovies.length > 0) {
@@ -86,16 +75,16 @@ export default function Home({results, page, total_pages}: IRequest) {
 
   useEffect(() => {
     getFavoriteListOfMovies()
-  }, [page])
+  }, [page]);
 
   useEffect(() => {
     synchroMovies()
-  }, [favoriteMovies, movies])
+  }, [favoriteMovies, movies]);
 
   return (
     <>
       <Head>
-        <title>Movie.io</title>
+        <title>Movie.io | Home</title>
         <meta name="description" content="Movie.io" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -103,11 +92,7 @@ export default function Home({results, page, total_pages}: IRequest) {
 
       <main className="w-full flex">
 
-        {/* Menu */}
-        <button className={`fixed top-3 bg-gray-1 p-1 rounded-sm z-10 ${menuIsOpen ? 'left-[320px]' : 'left-3'}`} onClick={handleToggleMenu}>
-          {menuIsOpen ? <X size={32} /> : <List size={32} />}
-        </button>
-        {menuIsOpen && <Sidebar />}
+        <Sidebar />
 
         {/* Content */}
         <div className='py-20 px-3 w-full flex flex-col sm:px-16'>
@@ -125,7 +110,7 @@ export default function Home({results, page, total_pages}: IRequest) {
             {/* -> List Movies */}
             <section className='self-center flex flex-col flex-wrap gap-10 mb-8 sm:flex-row'>
               {movies.map((movie, index) => (
-                <Movie key={movie.id + movie.title} movie={movie} />
+                <Movie key={movie.id + movie.title} movie={movie} id={movie.id}  />
               ))}
             </section>
               

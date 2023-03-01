@@ -1,6 +1,7 @@
 import { localizeDatePtBr } from "@/utils/localize-date-pt_br";
 import Image from "next/image";
 import Link from "next/link";
+import { Image as ImageIcon } from "phosphor-react";
 
 interface Props {
   movies: Array<any>;
@@ -16,13 +17,19 @@ export function SearchResults({movies}: Props) {
       
       {movies.results?.map(movie => (
         <div key={movie.id} className="flex gap-4 p-3 border-b-[1px] border-white/5">
-          <Image
-            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-            alt={movie.title}
-            width={60}
-            height={90}
-            className="rounded  w-[60px] h-[90px]"
-          />
+          {movie.poster_path ? (
+            <Image
+              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+              alt={movie.title}
+              width={60}
+              height={90}
+              className="rounded  w-[60px] h-[90px]"
+            />
+          ) : (
+            <div className="rounded min-w-[60px] h-[90px] bg-gray-700 flex items-center justify-center">
+              <ImageIcon size={28} />
+            </div>
+          ) }
 
           <div className="w-full flex flex-col">
             <p className="text-white/40">{movie.title}</p>
@@ -30,7 +37,7 @@ export function SearchResults({movies}: Props) {
               {localizeDatePtBr(movie.release_date)}
             </p>
 
-            <Link href="" className="text-sm text-blue-500 underline self-end">ver mais</Link>
+            <Link href={`/movie/${movie.id}`} className="text-sm text-blue-500 underline self-end">ver mais</Link>
           </div>
           
         </div>

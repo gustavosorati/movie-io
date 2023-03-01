@@ -23,3 +23,14 @@ export interface MovieDTO {
   }
   cast: CastDTO[]
 }
+
+export interface FavoriteMovieDTO {
+  id: number;
+  tmdb_id: number;
+  title: string;
+  poster_path: string;
+  vote_average: number;
+  vote_count: number;
+  userId: number;
+  isFavorite: boolean;
+}

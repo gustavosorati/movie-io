@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         "s-blue-500": "#00C9FF",
         "s-green-100": "#92FE9D",
+        "gray-1": "#21242D"
       },
       keyframes: {
         wiggle: {

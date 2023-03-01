@@ -1,56 +1,46 @@
-import Link from "next/link";
-import { ArrowSquareRight, Airplay, Heart } from "phosphor-react";
-import { useState } from "react";
-import { Avatar } from "./components/Avatar";
-import { LinkComponent } from "./components/Link";
+import { useSession } from "next-auth/react"
 
-const linksSideBar = [
-  {
-    id: 1,
-    url: '/',
-    title: 'Home',
-    icon: <Airplay size={30} weight="fill" />,
-  },
-  {
-    id: 2,
-    url: '/favorites',
-    title: 'Favoritos',
-    icon: <Heart size={30} weight="fill" />,
-  },
-]
+import { Avatar } from "./components/Avatar";
+import { LoginButton } from "../LoginButton";
+import { LinksComponent } from "./components/LinksComponent";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { List, X } from "phosphor-react";
 
 export function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true)
+  const {data} = useSession();
 
-  function handleToogleSideBar() {
-    setIsOpen(state => !state)
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  function handleToggleMenu() {
+    setMenuIsOpen(prevState => !prevState)
   }
 
   return (
-    <nav className={`
-      fixed flex flex-col py-6 px-2 
-      min-h-screen bg-[#21242D] border-r-2 border-r-white/10
-      transition-all ${isOpen ? 'w-96 items-start px-8' : 'w-24 items-center px-2'}
-    `}>
-      <button className={`inline-flex w-8 h-8 mb-14 ${isOpen && 'animate-rotate self-end'}`}onClick={handleToogleSideBar}>
-        <ArrowSquareRight size={32} className="text-s-blue-500" />
+    <div className="">
+      <button 
+        className={`fixed top-3 bg-gray-1 p-1 rounded-md z-10 transition-all border-2 border-white/40 focus:border-blue-500 ${menuIsOpen ? 'left-[320px]' : 'left-3'}`}     onClick={handleToggleMenu}
+      >
+        {menuIsOpen ? <X size={32} /> : <List size={32} />}
       </button>
-        
-      <header className="mb-16">
-        <Avatar isActive={isOpen}/>
-      </header>  
+       
+      <nav className={`fixed h-screen bg-gray-1 flex flex-col items-start py-20 border-r-2 border-r-white/10 ransition-all z-10 transition-all ${menuIsOpen ? 'opacity-1 w-72 visible' : 'w-0 opacity-0 invisible'}`}>
+          
+          <div className="flex-1 w-full">
+            <LinksComponent />
+          </div>
 
-      {linksSideBar.map(link => (
-        <LinkComponent 
-          key={link.id}
-          url={link.url}
-          icon={link.icon}
-          title={link.title}
-          isVisible={isOpen}
-        />
-      ))}   
+          <footer className="mt-full self-center">
+            {!data?.user ? (
+              <LoginButton />
+            ) : (
+              <Avatar />
+            )}
+          </footer> 
+        </nav> 
+      
+    </div>
 
-      <button>Login</button>
-    </nav>
+    
   )
 }

@@ -13,7 +13,6 @@ export function MovieImage({id, original_title, poster_path, width, height}: Pro
   const MOVIE_WIDTH = width ? width : 170;
   const MOVIE_HEIGHT = height ? height : 250;
 
-
   return (
     <div 
       className={
@@ -49,6 +48,7 @@ export function MovieImage({id, original_title, poster_path, width, height}: Pro
             width={MOVIE_WIDTH} 
             height={MOVIE_HEIGHT} 
             alt={original_title}
+            className="w-auto h-auto"
           /> 
         </Link>      
       </div>

@@ -31,8 +31,8 @@ export function SearchInput () {
   }
 
   function clearInput() {
-    // inputRef.current!.value = '';
-    // setMovies([]);
+    inputRef.current!.value = '';
+    setMovies([]);
   }
 
   return (

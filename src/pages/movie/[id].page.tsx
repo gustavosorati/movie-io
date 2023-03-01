@@ -1,59 +1,47 @@
-import { Box } from "@/components/Box";
-import { Sidebar } from "@/components/Sidebar/Sidebar";
-import axios from "axios";
+import Head from "next/head";
 import { GetServerSideProps } from "next";
 
-import { ActorsCarousel } from "./components/ActorsCarousel";
-import { MovieHero } from "./components/MovieHero";
+import axios from "axios";
 import { MovieDTO } from "@/dtos/MovieDTO";
 
+import { MovieHero } from "./components/MovieHero";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { ActorsCarousel } from "./components/ActorsCarousel";
+import { MovieExtraInfo } from "./components/MovieExtraInfo";
+import { SearchInput } from "@/components/Search/SearchInput";
+
 export default function MovieDetails(movie: MovieDTO) {
-  console.log(movie)
   return (
-    <main className="w-full flex">
-      <Sidebar />
+    <>
+      <Head>
+        <title>Movie.io | {movie.details.title}</title>
+        <meta name="description" content="Movie.io" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-      <div className='flex flex-col gap-8 items-center w-full p-20'>
-        <MovieHero movie={movie} />
+      <main className="w-full flex">
 
-        <div className="w-full max-w-[968px] grid grid-cols-[1fr_260px] gap-4">
-          <ActorsCarousel movie={movie} />
-          
-          <Box classNames="flex-col gap-4">
-            <div className="flex flex-col">
-              <strong>Data de Lançamento</strong>
-              <p>{movie.details.release_date}</p>
-            </div>
+        {/* Menu */}
+        <Sidebar />
 
-            <div className="flex flex-col">
-              <strong>Idioma original</strong>
-              <p>{movie.details.original_language}</p>
-            </div>
+        {/* Content */}
+        <div className='py-20 px-3 w-full flex flex-col sm:px-16'>
+          <div className='w-full flex flex-col gap-4 sm:max-w-[1010px] m-auto'>
+            
+            <SearchInput />
 
-            <div className="flex flex-col">
-              <strong>Orçamento</strong>
-              <p>{Intl.NumberFormat("pt-BR", {
-                currency: "USD",
-                style: "currency"
-              }).format(movie.details.budget)}</p>
-            </div>
+            <MovieHero movie={movie} />
 
-            <div className="flex flex-col">
-              <strong>Receita</strong>
-              <p>{Intl.NumberFormat("pt-BR", {
-                currency: "USD",
-                style: "currency"
-              }).format(movie.details.revenue)}</p>
-            </div>
+            <ActorsCarousel movie={movie} />
 
-          </Box>
+            <MovieExtraInfo movie={movie} />
+          </div>
         </div>
-
-      </div>
-    </main>
+      </main>
+    </>
   )
 }
-
 
 export const getServerSideProps: GetServerSideProps = async ({query}) => {
   const {id} = query;
@@ -80,7 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
   //   }
   // })
 
-  // console.log(watchProviders)
+  // console.log(watchProviders.results.US.rent)
 
   return {
     props: {
