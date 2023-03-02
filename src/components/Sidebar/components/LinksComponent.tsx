@@ -14,7 +14,7 @@ const linksSideBar = [
   },
   {
     id: 2,
-    url: '/favorites',
+    url: '/movie/favorites',
     title: 'Favoritos',
     icon: <BookSVG />,
   },

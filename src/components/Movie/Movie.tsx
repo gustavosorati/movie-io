@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import { Heart, Star } from "phosphor-react";
 import { api } from "@/lib/axios";
 import { MovieImage } from "./MovieImage";
+import { MovieCardDTO } from "@/dtos/MovieCardDTO";
+import { useMovie } from "@/hooks/useMovie";
 
 interface IMovie {
   id: number;
@@ -16,29 +18,37 @@ interface IMovie {
 }
 
 interface Props {
-  movie: IMovie;
+  movie: MovieCardDTO;
   id: number;
+  // update?: (movie_id: number) => Promise<void>;
+  // loading: (status: boolean) => void;
 }
 
 export function Movie({id, movie}: Props) {
+  const { getFavoriteMovies, getMovies } = useMovie();
   const { data: user } = useSession();
-  const [isMovieFavorite, setIsMovieFavorite] = useState(false);
+  const [markedAsFavorite, setMarkAsFavorite] = useState(movie.isFavorite);
 
   async function handleMarkAsFavorite() {
-    // try {
-    //   await api.post('/movies/create', {
-    //     movie,
-    //     id
-    //   });
+    try {
+      await api.post('/movies/create', {
+        id, 
+        title: movie.title, 
+        poster_path: movie.poster_path, 
+        vote_average: movie.vote_average, 
+        vote_count: movie.vote_count,
+      });
       
-    //   setIsMovieFavorite((state) => !state);
-    // } catch (error) {
-    //   console.log(error)
-    // }
+      setMarkAsFavorite((state) => !state);
+      getFavoriteMovies();
+      
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // useEffect(() => {
-  //   setIsMovieFavorite(movie.isFavorite)
+  //   setMarkAsFavorite(movie.isFavorite);
   // }, [movie.isFavorite]);
   
   return (
@@ -71,7 +81,7 @@ export function Movie({id, movie}: Props) {
               weight="fill" 
               className={`text-white/30 hover:fill-red-600 
               ${!user ? 'disabled' : ''}
-              ${isMovieFavorite ? "fill-red-600" : "text-white/30"}`} 
+              ${markedAsFavorite ? "fill-red-600" : "text-white/30"}`} 
             />
           </button>
         </div>

@@ -7,7 +7,7 @@ interface Props {
 
 export function MovieExtraInfo({movie}: Props) {
   return (
-    <Box classNames="flex-col w-full max-w-[968px]">
+    <Box classNames="flex-col w-full">
       <div className="flex flex-col">
         <strong>Data de Lançamento</strong>
         <p>{movie.details.release_date}</p>

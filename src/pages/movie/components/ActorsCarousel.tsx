@@ -18,7 +18,7 @@ export function ActorsCarousel({movie}: Props) {
   }, [])
 
   return (
-    <Box classNames="flex-col w-full max-w-[968px]">
+    <Box classNames="flex-col w-full max-w-[1010px]">
       <h2 className="text-base font-medium text-white/40 mb-4">Elenco</h2>
 
           <motion.div 

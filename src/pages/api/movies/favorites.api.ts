@@ -1,15 +1,7 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { AxiosError } from 'axios'
 import { prisma } from '@/lib/prisma'
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-
-interface IMovie {
-  id: number;
-  title: string;
-  poster_path: string;
-  vote_average: number;
-  vote_count: number;
-}
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,22 +11,31 @@ export default async function handler(
     return res.status(405).end()
   }
 
-  const session = await getSession({req})
+  const session = await getSession({req});
+  if(!session?.user){
+    return res.status(405).end();
+  }
 
-  const userExist = await prisma.user.findUnique({
-    where: {
-      email: session?.user?.email!
-    }
-  })
-  if(!userExist) throw new Error('User not exists')
-
-  const favoriteMovies = await prisma.movies.findMany({
-    where: {
-      userId: userExist.id
-    }
-  })
+  try {
+    const userExist = await prisma.user.findUnique({
+      where: {
+        email: session?.user?.email!
+      }
+    })
+    if(!userExist) throw new Error('User not exists')
   
-  // console.log(favoriteMovies)
+    const favoriteMovies = await prisma.movies.findMany({
+      where: {
+        userId: userExist.id
+      }
+    })
 
-  res.status(200).json([...favoriteMovies]);
+    return res.status(200).json([...favoriteMovies]);
+  } catch (error) {
+    if(error instanceof AxiosError) {
+      return res.status(400).json({ message: error.response?.data.message });
+    }
+
+    return res.status(500).json({ message: "Aconteceu um erro, tente novamente mais tarde" });
+  }
 }

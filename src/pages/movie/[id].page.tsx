@@ -62,14 +62,6 @@ export const getServerSideProps: GetServerSideProps = async ({query}) => {
     }
   });
 
-  // const {data: watchProviders} = await axios.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers`, {
-  //   headers: {
-  //     Authorization: `Bearer ${process.env.TMDB_TOKEN_V4}`
-  //   }
-  // })
-
-  // console.log(watchProviders.results.US.rent)
-
   return {
     props: {
       details: movieDetails,

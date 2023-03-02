@@ -1,14 +1,14 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
 
 type Props = {
   total_pages: number;
   current_page: number;
+  update_page: (new_page: number) => void;
 }
 
-export function Pagination({total_pages, current_page}: Props) {
-  const [currentPage, setCurrentPage] = useState(current_page);
-
+export function Pagination({total_pages, current_page, update_page}: Props) {
+  const currentPage = current_page;
+  
   const router = useRouter();
 
   const pagination = {
@@ -26,7 +26,7 @@ export function Pagination({total_pages, current_page}: Props) {
   }
 
   function handleUpdatePage(index: number) {
-    setCurrentPage(index);
+    update_page(index);
     router.push(`?page=${index}`);
   }
 
