@@ -21,10 +21,6 @@ export default function Home() {
     } 
   }, [router.isReady, router.query, getMovies]);
 
-  // useEffect(() => {
-  //   getMovies();
-  // }, [getMovies]);
-
   return (
     <>
       <Head>
