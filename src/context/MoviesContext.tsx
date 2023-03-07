@@ -61,7 +61,6 @@ export const MoviesContextProvider = ({children}: ProviderProps) => {
     getFavoriteMovies();
   }, [getFavoriteMovies]);
 
-  console.log(currentPage);
   return (
     <MoviesContext.Provider value={{
       movieCards,

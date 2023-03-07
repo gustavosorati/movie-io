@@ -37,7 +37,6 @@ export function SearchInput () {
     setMovies([]);
   }
 
-  console.log(isActive)
   return (
       <div 
         className="relative flex gap-4 items-center w-full max-w-[350px] py-3 px-3 rounded-md bg-gray-1 border-2 border-white/10 focus-within:border-s-green-100 mb-4"

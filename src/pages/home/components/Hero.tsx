@@ -62,38 +62,48 @@ export function Hero ({movie}: Props) {
       
       <div className="w-full flex flex-col gap-4 bg-gray-1 p-4 border-[1px] border-white/10  max-w-[1010px] mb-8">
         {/* Info */}
-        <div className="flex flex-col gap-2">
-          <Star voteAverage={movie.vote_average} voteCount={movie.vote_count} />
 
-          <Heading 
-            componentTag="h1" 
-            variant="primary"
-            title={movie.title}  
-          />
+        {isLoading && (
+          <div className="min-h-[120px] w-full flex self-center items-center justify-center">
+            <Loading />
+          </div>
+        )}
 
-          <Text 
-            text={movie.overview}
-          />
+        {!isLoading && (
+          <>
+            <div className="flex flex-col gap-2">
+              <Star voteAverage={movie.vote_average} voteCount={movie.vote_count} />
 
-          <GenericLink url={`/movie/${movie.id}`} />
-        </div>
+              <Heading 
+                componentTag="h1" 
+                variant="primary"
+                title={movie.title}  
+              />
 
-        {/* Trailer */}
-        <div className="flex w-full">
-          {isLoading && <Loading />}
-          {!isLoading && (
-            <YouTube
-              videoId={trailer.key}
-              opts={
-                {
-                  width: '100%',
-                  height: '100%',
+              <Text 
+                text={movie.overview}
+              />
+
+              <GenericLink url={`/movie/${movie.id}`} />
+            </div>
+
+            {/* Trailer */}
+            <div className="flex w-full">
+          
+              <YouTube
+                videoId={trailer.key}
+                opts={
+                  {
+                    width: '100%',
+                    height: '100%',
+                  }
                 }
-              }
-              style={{ width: '100%', height: '240px'}}
-            />
-          )}
-        </div>
+                style={{ width: '100%', height: '240px'}}
+              />
+            </div>
+          </>
+        )}
+
       </div>
     </div>
   )
